@@ -1,17 +1,19 @@
 "use client";
 
+import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-
-import { DialogDescription } from "@radix-ui/react-dialog";
-import { useForm } from "react-hook-form";
 import {
     Form,
     FormControl,
@@ -20,27 +22,24 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form";
-
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-import { useEffect, useState } from "react";
-
-
+import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     name: z.string().min(1, {
-        message: "Server name is required",
+        message: "Server name is required."
     }),
     imageUrl: z.string().min(1, {
-        message: "Image URL is required",
-    }),
-
+        message: "Server image is required."
+    })
 });
 
-
-export const Initialmodal = () => {
+export const InitialModal = () => {
     const [isMounted, setIsMounted] = useState(false);
+
+    const router = useRouter();
 
     useEffect(() => {
         setIsMounted(true);
@@ -51,18 +50,26 @@ export const Initialmodal = () => {
         defaultValues: {
             name: "",
             imageUrl: "",
-        },
+        }
     });
 
     const isLoading = form.formState.isSubmitting;
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        try {
+            await axios.post("/api/servers", values);
+
+            form.reset();
+            router.refresh();
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     if (!isMounted) {
         return null;
     }
-
 
     return (
         <Dialog open>
@@ -79,29 +86,42 @@ export const Initialmodal = () => {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <div className="space-y-8 px-6">
                             <div className="flex items-center justify-center text-center">
-                                TODO: Image upload
+                                <FormField
+                                    control={form.control}
+                                    name="imageUrl"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <FileUpload
+                                                    endpoint="serverImage"
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
+
                             <FormField
                                 control={form.control}
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel
-                                            className="uppercase text-sm font-bold text-zinc-500 dark: text-secondary/70"
+                                            className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                                         >
                                             Server name
                                         </FormLabel>
                                         <FormControl>
                                             <Input
                                                 disabled={isLoading}
-                                                className="bg-zinc-300/50 border-0
-                                                focus:ring-0 text-black focus-visible:ring-offset-0"
-                                                placeholder="Enter a server name"
+                                                className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                placeholder="Enter server name"
                                                 {...field}
                                             />
                                         </FormControl>
                                         <FormMessage />
-
                                     </FormItem>
                                 )}
                             />

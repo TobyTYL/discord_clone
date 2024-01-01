@@ -11,9 +11,12 @@ const handleAuth = () => {
 
 export const ourFileRouter = {
     serverImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+        //配置了两种文件上传路由
+        // serverImage 路由：只允许上传图片，最大文件大小为 4MB，最大文件数量为 1
         .middleware(() => handleAuth())
         .onUploadComplete(() => { }),
     messageFile: f(["image", "pdf"])
+        // messageFile 路由：处理图像和 PDF 文件的上传。
         .middleware(() => handleAuth())
         .onUploadComplete(() => { })
 } satisfies FileRouter;

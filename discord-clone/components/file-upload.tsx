@@ -38,6 +38,7 @@ export const FileUpload = ({
         )
     }
     return (
+        // dropdown box to upload files
         <UploadDropzone
             endpoint={endpoint}
             onClientUploadComplete={(res) => {

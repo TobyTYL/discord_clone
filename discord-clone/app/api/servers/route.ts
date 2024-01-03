@@ -34,7 +34,6 @@ export async function POST(req: Request) {
             }
         });
         // 将创建的服务器记录作为 JSON 响应返回。
-
         return NextResponse.json(server);
     } catch (error) {
         console.log("[SERVERS_POST]", error);

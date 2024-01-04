@@ -4,10 +4,9 @@ import { MemberRole } from "@prisma/client";
 
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-
+// 从请求体中解析出 name 和 imageUrl 属性
 export async function POST(req: Request) {
     try {
-        // 从请求体中解析出 name 和 imageUrl 属性
         const { name, imageUrl } = await req.json();
         const profile = await currentProfile();
 
@@ -33,7 +32,6 @@ export async function POST(req: Request) {
                 }
             }
         });
-        // 将创建的服务器记录作为 JSON 响应返回。
         return NextResponse.json(server);
     } catch (error) {
         console.log("[SERVERS_POST]", error);

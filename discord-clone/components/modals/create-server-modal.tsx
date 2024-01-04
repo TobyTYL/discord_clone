@@ -36,10 +36,10 @@ const formSchema = z.object({
     })
 });
 
+// watch the modal is open or not
 export const CreateServerModal = () => {
     const { isOpen, onClose, type } = useModal();
     const router = useRouter();
-    // watch the modal is open or not
     const isModalOpen = isOpen && type === "createServer";
 
     const form = useForm({

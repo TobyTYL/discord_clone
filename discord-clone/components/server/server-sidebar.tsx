@@ -10,6 +10,7 @@ import { db } from "@/lib/db";
 import { ServerHeader } from "./server-header";
 import { ServerSearch } from "./server-search";
 import { ServerSection } from "./server-section";
+import { ServerChannel } from "./server-channel";
 import { ServerMember } from "./server-member";
 
 interface ServerSidebarProps {
@@ -128,7 +129,14 @@ export const ServerSidebar = async ({
                             label="Text Channels"
                         />
                         <div className="space-y-[2px]">
-
+                            {textChannels.map((channel) => (
+                                <ServerChannel
+                                    key={channel.id}
+                                    channel={channel}
+                                    role={role}
+                                    server={server}
+                                />
+                            ))}
                         </div>
                     </div>
                 )}
@@ -141,7 +149,14 @@ export const ServerSidebar = async ({
                             label="Voice Channels"
                         />
                         <div className="space-y-[2px]">
-
+                            {audioChannels.map((channel) => (
+                                <ServerChannel
+                                    key={channel.id}
+                                    channel={channel}
+                                    role={role}
+                                    server={server}
+                                />
+                            ))}
                         </div>
                     </div>
                 )}
@@ -154,7 +169,14 @@ export const ServerSidebar = async ({
                             label="Video Channels"
                         />
                         <div className="space-y-[2px]">
-
+                            {videoChannels.map((channel) => (
+                                <ServerChannel
+                                    key={channel.id}
+                                    channel={channel}
+                                    role={role}
+                                    server={server}
+                                />
+                            ))}
                         </div>
                     </div>
                 )}

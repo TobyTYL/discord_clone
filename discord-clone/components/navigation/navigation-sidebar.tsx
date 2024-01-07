@@ -7,8 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { currentProfile } from "@/lib/current-profile"
 import { db } from "@/lib/db";
 
-import { NavigationAction } from "@/components/navigation/navigation-action";
-import { NavigationItem } from "@/components/navigation/navigation-item";
+import { NavigationAction } from "./navigation-action";
+import { NavigationItem } from "./navigation-item";
 
 export const NavigationSidebar = async () => {
     const profile = await currentProfile();
@@ -46,7 +46,6 @@ export const NavigationSidebar = async () => {
                     </div>
                 ))}
             </ScrollArea>
-
             <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
                 <ModeToggle />
                 <UserButton
